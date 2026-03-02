@@ -9,7 +9,17 @@ const ToModel = {
   getByDro: async (dro_id) => {
     const db = getDb();
     return db.query(
-      "SELECT id, user_name, name, phone, email, taluk, district FROM to_user WHERE dro_id = ?",
+      `
+      SELECT
+        id,
+        name,
+        phone,
+        email,
+        taluk,
+        district
+      FROM to_user
+      WHERE dro_id = ?
+      `,
       [dro_id]
     );
   },
@@ -21,7 +31,6 @@ const ToModel = {
       `
       UPDATE to_user
       SET
-        user_name = ?,
         name = ?,
         phone = ?,
         email = ?,
@@ -30,7 +39,6 @@ const ToModel = {
       WHERE id = ?
       `,
       [
-        data.user_name,
         data.name,
         data.phone,
         data.email,

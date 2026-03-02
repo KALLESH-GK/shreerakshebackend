@@ -9,7 +9,17 @@ const SkoModel = {
   getByTo: async (to_id) => {
     const db = getDb();
     return db.query(
-      "SELECT id, user_name, name, phone, email, center_name FROM sko WHERE to_id = ?",
+      `
+      SELECT
+        id,
+        name,
+        phone,
+        email,
+        center_name,
+        wallet_balance
+      FROM sko
+      WHERE to_id = ?
+      `,
       [to_id]
     );
   },
@@ -21,19 +31,19 @@ const SkoModel = {
       `
       UPDATE sko
       SET
-        user_name = ?,
         name = ?,
         phone = ?,
         email = ?,
-        center_name = ?
+        center_name = ?,
+        wallet_balance = ?
       WHERE id = ?
       `,
       [
-        data.user_name,
         data.name,
         data.phone,
         data.email,
         data.center_name,
+        data.wallet_balance,
         id,
       ]
     );
@@ -46,4 +56,3 @@ const SkoModel = {
 };
 
 module.exports = SkoModel;
-

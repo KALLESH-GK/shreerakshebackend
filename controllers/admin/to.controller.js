@@ -1,6 +1,14 @@
 const ToModel = require("../../models/admin/to.model");
 
 exports.createTo = async (req, res) => {
+  const { phone } = req.body;
+
+  if (!/^\d{10}$/.test(phone)) {
+    return res.status(400).json({
+      message: "Phone number must be exactly 10 digits",
+    });
+  }
+
   await ToModel.create(req.body);
   res.json({ message: "TO created successfully" });
 };
@@ -11,6 +19,14 @@ exports.getTosByDro = async (req, res) => {
 };
 
 exports.updateTo = async (req, res) => {
+  const { phone } = req.body;
+
+  if (phone && !/^\d{10}$/.test(phone)) {
+    return res.status(400).json({
+      message: "Phone number must be exactly 10 digits",
+    });
+  }
+
   await ToModel.updateById(req.params.id, req.body);
   res.json({ message: "TO updated successfully" });
 };

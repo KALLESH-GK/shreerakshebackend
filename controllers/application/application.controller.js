@@ -157,8 +157,13 @@ exports.updateAndApproveApplication = async (req, res) => {
     const jskoId = req.user.id;
 
     const app = await Application.getApplicationById(id);
+
     if (!app)
       return res.status(404).json({ message: "Application not found" });
+
+    /* 🔥 NEW CHECK */
+    if (app.application_status === "APPROVED")
+      return res.status(400).json({ message: "Application already approved" });
 
     const allowed = await Application.isApplicationUnderJsko(id, jskoId);
     if (!allowed)

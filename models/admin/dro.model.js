@@ -8,12 +8,32 @@ const DroModel = {
 
   getAll: async () => {
     const db = getDb();
-    return db.query("SELECT * FROM dro_users");
+    // Only required fields
+    return db.query(
+      "SELECT id, name, phone, email, district FROM dro_users"
+    );
   },
 
   updateById: async (id, data) => {
     const db = getDb();
-    return db.query("UPDATE dro_users SET ? WHERE id = ?", [data, id]);
+    return db.query(
+      `
+      UPDATE dro_users
+      SET
+        name = ?,
+        phone = ?,
+        email = ?,
+        district = ?
+      WHERE id = ?
+      `,
+      [
+        data.name,
+        data.phone,
+        data.email,
+        data.district,
+        id,
+      ]
+    );
   },
 
   deleteById: async (id) => {

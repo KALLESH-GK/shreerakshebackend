@@ -9,12 +9,21 @@ const GramasevakaModel = {
   getBySko: async (jsko_id) => {
     const db = getDb();
     return db.query(
-      "SELECT id, name, village FROM gramasevakas WHERE jsko_id = ?",
+      `
+      SELECT
+        id,
+        name,
+        phone,
+        email,
+        village
+      FROM gramasevakas
+      WHERE jsko_id = ?
+      `,
       [jsko_id]
     );
   },
 
-updateById: async (id, data) => {
+ updateById: async (id, data) => {
   const db = getDb();
 
   return db.query(
@@ -22,10 +31,11 @@ updateById: async (id, data) => {
     UPDATE gramasevakas
     SET
       name = ?,
+      phone = ?,
       village = ?
     WHERE id = ?
     `,
-    [data.name, data.village, id]
+    [data.name, data.phone, data.village, id]
   );
 },
 

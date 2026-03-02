@@ -29,7 +29,16 @@ exports.createRecharge = async (req, res) => {
     if (!req.file)
       return res.status(400).json({ message: "Screenshot is required" });
 
-    /* 🔥 FETCH SKO NAME FROM SKO TABLE */
+    /* 🔥 CHECK DUPLICATE UTR */
+    const existingUtr = await WalletRecharge.getRechargeByUtr(utr_number);
+
+    if (existingUtr) {
+      return res.status(400).json({
+        message: "UTR number already exists",
+      });
+    }
+
+    /* 🔥 FETCH SKO NAME */
     const skoName = await WalletRecharge.getSkoNameById(user.id);
 
     if (!skoName)
@@ -41,11 +50,11 @@ exports.createRecharge = async (req, res) => {
       { folder: "shreerakshe/wallet-recharge" }
     );
 
-    /* ---------- INSERT RECHARGE ---------- */
+    /* ---------- INSERT ---------- */
     await WalletRecharge.createRecharge({
       recharge_id: "RCG" + Date.now(),
       jsko_id: user.id,
-      jsko_name: skoName, // ✅ FROM SKO TABLE
+      jsko_name: skoName,
       amount: Number(amount),
       utr_number,
       screenshot: uploadResult.secure_url,
@@ -128,3 +137,5 @@ exports.getAllRecharges = async (req, res) => {
     res.status(500).json({ message: "Server error" });
   }
 };
+
+

@@ -149,3 +149,14 @@ exports.approveRechargeWithTransaction = async (connection, rechargeId) => {
 
   return recharge;
 };
+
+exports.getRechargeByUtr = async (utrNumber) => {
+  const db = getDb();
+
+  const [rows] = await db.query(
+    `SELECT id FROM walletrecharge WHERE utr_number = ?`,
+    [utrNumber]
+  );
+
+  return rows[0];
+};

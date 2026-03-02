@@ -35,6 +35,9 @@ exports.getDroReport = async (req, res) => {
 /* ===============================
    TOs UNDER DRO
 ================================ */
+/* ===============================
+   TOs UNDER DRO
+================================ */
 exports.getTosUnderDro = async (req, res) => {
   const db = getDb();
   const role = req.user.role;
@@ -42,7 +45,7 @@ exports.getTosUnderDro = async (req, res) => {
 
   let droId = req.params.droId;
 
-  // 🔥 If DRO login → override droId
+  // If DRO login → override droId
   if (role === "dro") {
     droId = userId;
   }
@@ -51,6 +54,9 @@ exports.getTosUnderDro = async (req, res) => {
     SELECT
       t.id,
       t.name,
+      t.phone,
+      t.email,
+      t.taluk,
       t.district,
       (
         SELECT COUNT(*)
@@ -64,7 +70,6 @@ exports.getTosUnderDro = async (req, res) => {
 
   res.json(rows);
 };
-
 /* ===============================
    JSKOs UNDER TO
 ================================ */
